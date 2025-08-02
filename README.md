@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="#"><img src="https://img.shields.io/badge/python-3.9+-blue.svg" alt="Python Version"></a>
-  <a href="#"><img src="https://img.shields.io/badge/docker-ready-2496ED.svg" alt="Docker Ready"></a>
+  <a href="#"><img src="https://img.shields.io/badge/docker-en%20d%C3%A9veloppement-orange.svg" alt="Docker Ready"></a>
   <a href="#"><img src="https://img.shields.io/badge/crew%20ai-powered-FF6B6B.svg" alt="Crew AI Powered"></a>
   <a href="#"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License"></a>
   <a href="#"><img src="https://img.shields.io/badge/status-en%20d%C3%A9veloppement-orange.svg" alt="Project Status"></a>
