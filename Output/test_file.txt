@@ -1,0 +1,12 @@
+Ceci est un fichier de test pour l'outil de sélection de fichier.
+
+This is a test file for the file selector tool.
+
+Contenu du test:
+- Texte en français
+- Test content in English
+- Date: 2025-01-02
+- Application: LazyRepo File Selector
+
+Ce fichier sera utilisé pour tester la fonctionnalité de copie
+vers le dossier Output.
