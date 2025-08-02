@@ -11,3 +11,6 @@ __pycache__/
 
 # Fichier de secrets
 .env
+
+# Fichiers de note
+STRUCTURE_PROPOSAL.md
