@@ -183,39 +183,106 @@ languages:
     readme_template: "javascript_readme.md"
 ```
 
-### Variables d'Environnement (`.env`)
+### Variables d'Environnement
 
+#### Développement (`.env.dev`)
 ```bash
-# API Keys
-OPENAI_API_KEY=your_openai_key
-CREW_AI_API_KEY=your_crew_ai_key
+# IA Locale - LM Studio pour développement
+AI_PROVIDER=lmstudio
+LMSTUDIO_URL=http://localhost:1234
+LMSTUDIO_MODEL=llama2
 
 # Configuration
 DEFAULT_LANGUAGE=python
 OUTPUT_FORMAT=markdown
 VERBOSE_MODE=true
+DEBUG=true
+```
+
+#### Production (`.env.prod`)
+```bash
+# IA Locale - Ollama pour production
+AI_PROVIDER=ollama
+OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL=llama2
+
+# Configuration
+DEFAULT_LANGUAGE=python
+OUTPUT_FORMAT=markdown
+VERBOSE_MODE=false
+DEBUG=false
 ```
 
 ---
 
 ## 🐳 Utilisation avec Docker
 
-LazyRepo est conçu pour fonctionner parfaitement dans un environnement conteneurisé, offrant portabilité et facilité de déploiement.
+LazyRepo est conçu pour fonctionner parfaitement dans un environnement conteneurisé, offrant portabilité et facilité de déploiement avec plusieurs interfaces utilisateur.
 
-### 🚀 Démarrage Rapide avec Docker
+### 🚀 Interfaces Disponibles
 
+LazyRepo propose **trois modes d'utilisation** via Docker pour s'adapter à tous les besoins :
+
+#### 💻 Interface en Ligne de Commande (CLI)
 ```bash
 # Construire l'image
 docker build -t lazyrepo .
 
-# Analyser un projet local
+# Analyser un projet en mode CLI
 docker run -v /chemin/vers/votre/projet:/app/input \
            -v ./output:/app/output \
            --env-file .env \
-           lazyrepo
+           lazyrepo --mode cli /app/input
+```
 
-# Ou avec docker-compose
-docker-compose up
+#### 🖥️ Interface Graphique (GUI)
+```bash
+# Lancer l'interface graphique (nécessite X11 forwarding sur Linux/Mac)
+docker run -v /chemin/vers/votre/projet:/app/input \
+           -v ./output:/app/output \
+           -v /tmp/.X11-unix:/tmp/.X11-unix \
+           -e DISPLAY=$DISPLAY \
+           --env-file .env \
+           lazyrepo --mode gui
+
+# Sur Windows avec Docker Desktop
+docker run -v /chemin/vers/votre/projet:/app/input \
+           -v ./output:/app/output \
+           --env-file .env \
+           lazyrepo --mode gui
+```
+
+#### 🌐 Interface Web
+```bash
+# Lancer le service web
+docker run -p 8080:8080 \
+           -v /chemin/vers/votre/projet:/app/input \
+           -v ./output:/app/output \
+           --env-file .env \
+           lazyrepo --mode web
+
+# Accès via http://localhost:8080
+# Interface web complète avec upload de projets et visualisation des résultats
+```
+
+### 🤖 Configuration IA Locale
+
+#### Développement avec LM Studio
+```bash
+# Variables d'environnement pour LM Studio
+docker run --env-file .env.dev \
+           -e AI_PROVIDER=lmstudio \
+           -e LMSTUDIO_URL=http://host.docker.internal:1234 \
+           lazyrepo
+```
+
+#### Production avec Ollama
+```bash
+# Variables d'environnement pour Ollama
+docker run --env-file .env.prod \
+           -e AI_PROVIDER=ollama \
+           -e OLLAMA_URL=http://host.docker.internal:11434 \
+           lazyrepo
 ```
 
 ### 📁 Volumes Docker Recommandés
@@ -226,15 +293,44 @@ docker-compose up
 | `/app/output` | Résultats générés | Sauvegarde des fichiers créés |
 | `/app/config` | Configuration personnalisée | Fichiers YAML custom |
 
-### 🌐 Mode Service Web
+### 🚀 Docker Compose pour Usage Simplifié
 
-```bash
-# Lancer en mode API REST
-docker run -p 8080:8080 \
-           --env-file .env \
-           lazyrepo --mode web
+```yaml
+version: '3.8'
+services:
+  lazyrepo-web:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./projects:/app/input
+      - ./output:/app/output
+      - ./config:/app/config
+    environment:
+      - AI_PROVIDER=ollama
+      - OLLAMA_URL=http://ollama:11434
+    command: --mode web
+    
+  lazyrepo-cli:
+    build: .
+    volumes:
+      - ./projects:/app/input
+      - ./output:/app/output
+    environment:
+      - AI_PROVIDER=ollama
+      - OLLAMA_URL=http://ollama:11434
+    command: --mode cli /app/input
+    profiles: ["cli"]
+    
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
 
-# Accès via http://localhost:8080
+volumes:
+  ollama_data:
 ```
 
 ### ☁️ Déploiement Cloud
@@ -251,7 +347,8 @@ LazyRepo Docker est compatible avec :
 ### Framework Principal
 - **Python 3.9+** - Langage de développement
 - **Crew AI** - Orchestration des agents IA multi-agents
-- **LM STUDIO** - Modèles de langage pour l'IA générative
+- **LM Studio** - Modèles IA locaux pour le développement
+- **Ollama** - Modèles IA locaux pour la production
 
 ### Architecture et Déploiement
 - **Docker** - Conteneurisation et portabilité
@@ -264,9 +361,10 @@ LazyRepo Docker est compatible avec :
 - **Security scanners** - Détection de vulnérabilités
 
 ### Interfaces Utilisateur
-- **CLI** - Interface en ligne de commande
-- **REST API** - Service web (mode Docker)
-- **Tkinter** - Interface graphique (développement)
+- **CLI** - Interface en ligne de commande (Docker + terminal)
+- **GUI** - Interface graphique intuitive (Docker + bureau)
+- **REST API** - Service web accessible via navigateur (Docker + web)
+- **Tkinter** - Interface native pour le développement local
 
 ---
 
