@@ -251,7 +251,7 @@ LazyRepo Docker est compatible avec :
 ### Framework Principal
 - **Python 3.9+** - Langage de développement
 - **Crew AI** - Orchestration des agents IA multi-agents
-- **OpenAI API** - Modèles de langage pour l'IA générative
+- **LM STUDIO** - Modèles de langage pour l'IA générative
 
 ### Architecture et Déploiement
 - **Docker** - Conteneurisation et portabilité
