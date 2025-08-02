@@ -1,0 +1,13 @@
+# Environnement virtuel
+venv_LazyRepo/
+
+# Fichiers de cache Python
+__pycache__/
+*.pyc
+
+# Fichiers de configuration des éditeurs
+.vscode/
+.idea/
+
+# Fichier de secrets
+.env
