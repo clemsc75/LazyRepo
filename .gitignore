@@ -13,9 +13,9 @@ __pycache__/
 .env
 
 # Fichiers de note
-STRUCTURE_PROPOSAL.md  
 JOURNAL_DEV.md
 MIND_MAP.md
+ARCHITECTURE_FINAL_STRUCTURE.md
 
 # Fichiers temporaires et de test
 test_dependencies.py
